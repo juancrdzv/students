@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { NavBar } from "./components"
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from "react-router-dom";
+import { AddStudent, Student, Students } from "./views";
+import { students } from './mock';
+import { StoreContext } from './contexts/Store';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [store, dispatch] = useState({ currentStudent: null, students });
+    return (
+        <StoreContext.Provider value={[store,dispatch]}>
+            <Router>
+                <NavBar />
+                <Switch>
+                    <Route path="/students">
+                        <Students />
+                    </Route>
+                    <Route path="/student/:name">
+                        <Student />
+                    </Route>
+                    <Route path="/">
+                        <AddStudent />
+                    </Route>
+                </Switch>
+            </Router>
+        </StoreContext.Provider>);
+};
 
 export default App;
